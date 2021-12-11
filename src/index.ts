@@ -22,6 +22,7 @@ export const client = new Client({
       Intents.FLAGS.DIRECT_MESSAGES
   ]
 });
+
 client.login(process.env.TOKEN);
 
 launch(client, path.join(__dirname, "commands"), {

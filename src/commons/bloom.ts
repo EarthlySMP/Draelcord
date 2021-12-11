@@ -14,7 +14,7 @@ export class bloomapi {
         return await response.json()
       }
       
-    async getSpecificServerResource(identifier:string) {
+    async getSpecificServerResource(identifier: any) {
         let response = await fetch("https://mc.bloom.host/api/client/servers/"+identifier+"/resources",{
             method: "GET",
             headers: {
