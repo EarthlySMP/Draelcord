@@ -1,6 +1,6 @@
 {
   "name": "draelcord",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Draelcord is a Discord bot for Draelcraft Discord.",
   "main": "dist/index.js",
   "scripts": {
