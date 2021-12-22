@@ -8,7 +8,7 @@
     "dev-instance": "rimraf dist && tsc && node . dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "smartfrigde",
+  "author": "smartfridge",
   "license": "MIT",
   "dependencies": {
     "@network-utils/tcp-ping": "^1.2.1",
