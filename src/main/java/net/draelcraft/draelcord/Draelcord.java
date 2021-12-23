@@ -16,6 +16,7 @@ import java.util.Objects;
 
 public final class Draelcord extends ListenerAdapter {
     private static String token;
+    private static JDA api = null;
 
     public static void main(String[] args) throws InterruptedException {
         if(args.length == 0) {
@@ -27,7 +28,6 @@ public final class Draelcord extends ListenerAdapter {
             System.out.println("Welcome to Draelcord");
         }
 
-        JDA jda = null;
         try {
             jda = JDABuilder.createLight(args[0], GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
                     .addEventListeners(new Draelcord())
@@ -66,5 +66,9 @@ public final class Draelcord extends ListenerAdapter {
             case "status":
                 new StatusCommand(event);
         }
+    }
+    
+    public JDA getDiscordAPI() {
+        return this.api;
     }
 }
