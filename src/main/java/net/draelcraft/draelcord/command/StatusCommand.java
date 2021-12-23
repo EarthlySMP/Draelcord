@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.draelcraft.draelcord.Draelcord;
 import java.lang.management.ManagementFactory;
+import java.lang.*;
 
 public class StatusCommand {
     public StatusCommand(SlashCommandEvent event) {
@@ -15,10 +16,21 @@ public class StatusCommand {
         em.setTitle("Draelcraft Bot Status");
         em.setColor(new Color(210, 55, 44));
         em.addField("🌎 API Latency:", String.valueOf(e.getJDA().getGatewayPing()) + "ms", true);
-        em.addField("📡 Uptime:", String.valueOf(ManagementFactory.getRuntimeMXBean().getUptime()) + "ms", true);
+        em.addField("📡 Uptime:", String.valueOf(convertTime(ManagementFactory.getRuntimeMXBean().getUptime())) + "ms", true);
         em.addField("📜 Running:", "v" + String.valueOf(getVersion()), true);
         
         e.getChannel.sendMessageEmbeds(em);
+    }
+    
+    private String convertTime(long time) {     
+        String seconds = String.valueOf(Math.floor((time / 1000) % 60));
+        String minutes = String.valueOf(Math.floor((time / (1000 * 60) % 60));
+        String hours = String.valueOf(Math.floor((time / (1000 * 60 * 60) % 24));
+        
+        hours = Integer.parseInt(hours) < 10 ? "0" + hours : hours;
+        minutes = Integer.parseInt(minutes) < 10 ? "0" + minutes : minutes;
+        seconds = Integer.parseInt(seconds) < 10 ? "0" + seconds : seconds;
+        return hours + ":" + minutes + " minutes";      
     }
     
     private synchronized String getVersion() {
