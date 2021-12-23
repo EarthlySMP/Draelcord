@@ -1,5 +1,7 @@
 net/draelcraft/draelcord/Draelcord.class
 net/draelcraft/draelcord/command/TestCommand.class
+net/draelcraft/draelcord/config/ConfigHandler$Command.class
+net/draelcraft/draelcord/util/MapUtils.class
+net/draelcraft/draelcord/util/EmbedUtils.class
 net/draelcraft/draelcord/command/StatusCommand.class
 net/draelcraft/draelcord/config/ConfigHandler.class
-net/draelcraft/draelcord/util/MapUtils.class

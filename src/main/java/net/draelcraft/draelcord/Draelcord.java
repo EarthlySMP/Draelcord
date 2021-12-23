@@ -1,5 +1,7 @@
 package net.draelcraft.draelcord;
 
+import com.mattmalec.pterodactyl4j.PteroBuilder;
+import com.mattmalec.pterodactyl4j.application.entities.PteroApplication;
 import net.draelcraft.draelcord.command.StatusCommand;
 import net.draelcraft.draelcord.command.TestCommand;
 import net.draelcraft.draelcord.config.ConfigHandler;
@@ -10,12 +12,15 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.restaction.CommandCreateAction;
 
 import javax.security.auth.login.LoginException;
 import java.util.Objects;
 
 public final class Draelcord extends ListenerAdapter {
     private static String token;
+    private static String bloomToken;
+    private static PteroApplication bloomApi;
 
     public static void main(String[] args) throws InterruptedException {
         if(args.length == 0) {
@@ -24,6 +29,9 @@ public final class Draelcord extends ListenerAdapter {
           System.exit(13);
         } else {
             token = args[0];
+            bloomToken = args[1];
+            bloomApi = PteroBuilder.createApplication("https://mc.bloom.host/", bloomToken);
+
             System.out.println("Welcome to Draelcord");
         }
 
@@ -39,18 +47,22 @@ public final class Draelcord extends ListenerAdapter {
         jda.awaitReady();
 
         // Command Initialization
+        ConfigHandler.initCommands();
+        // Get all guilds
         for(String guildId: ConfigHandler.guildIds) {
-          // Get the guild
           Guild guild = jda.getGuildById(guildId);
           if(guild != null) {
             // Get the commands
-            for(String commandDescription: ConfigHandler.commands.values()) {
-                String commandName = MapUtils
-                    .getKeyByValue(ConfigHandler.commands,commandDescription);
-                // Upsert the commands to all guilds
-                guild.upsertCommand(commandName,commandDescription).queue();
+            for(ConfigHandler.Command command: ConfigHandler.commands) {
+                if(command.getOptionData() != null) {
+                    CommandCreateAction commandCreateAction = guild.upsertCommand(command.getName(),command.getDescription());
+                    commandCreateAction.addOptions(command.getOptionData());
+                    commandCreateAction.queue();
+                } else {
+                    guild.upsertCommand(command.getName(),command.getDescription()).queue();
                 }
             }
+          }
         }
     }
 
@@ -64,7 +76,7 @@ public final class Draelcord extends ListenerAdapter {
             case "test":
                 new TestCommand(event);
             case "status":
-                new StatusCommand(event);
+                new StatusCommand(event, bloomApi);
         }
     }
 }
